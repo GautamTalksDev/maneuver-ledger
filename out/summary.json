@@ -1,0 +1,1048 @@
+{
+ "agreement": {
+  "all": {
+   "agree": 1841,
+   "agree_share": 0.4819371727748691,
+   "beyond_chance": 0.29376087426063574,
+   "chance_share": 0.2664484190354519,
+   "events": 3821,
+   "testable": 3820
+  },
+  "avoidance-like": {
+   "agree": 397,
+   "agree_share": 0.4034552845528455,
+   "beyond_chance": 0.2414419993382132,
+   "chance_share": 0.21358061621298235,
+   "events": 985,
+   "testable": 984
+  },
+  "drag make-up": {
+   "agree": 1444,
+   "agree_share": 0.5091678420310296,
+   "beyond_chance": 0.31284994780220843,
+   "chance_share": 0.28569872562901644,
+   "events": 2836,
+   "testable": 2836
+  },
+  "met": false,
+  "pre_registered_line": 0.7
+ },
+ "avoidance_corrected": {
+  "hi95": 9.314435173827729,
+  "lo95": 6.100525172049997,
+  "rate": 8.158079264909539
+ },
+ "avoidance_sign": {
+  "down": 759,
+  "up": 226
+ },
+ "bands": [
+  {
+   "avoidance-like": 7.517180684016111,
+   "avoidance-like count": 18,
+   "avoidance-like upper95": 11.88038633258791,
+   "band": "400 to 460 km",
+   "drag make-up": 2.9233480437840433,
+   "drag make-up count": 7,
+   "drag make-up upper95": 6.0232142578235655,
+   "exposure_days": 874.5965111600221,
+   "passes_under_1km": 15.887706043956044,
+   "passes_under_5km": 371.6050824175824,
+   "satellites": 182
+  },
+  {
+   "avoidance-like": 9.332535840226376,
+   "avoidance-like count": 704,
+   "avoidance-like upper95": 10.04813485877583,
+   "band": "460 to 475 km",
+   "drag make-up": 31.444282688944554,
+   "drag make-up count": 2372,
+   "drag make-up upper95": 32.73572798355448,
+   "exposure_days": 27552.63996862001,
+   "passes_under_1km": 16.35010713661011,
+   "passes_under_5km": 432.91846685324475,
+   "satellites": 5717
+  },
+  {
+   "avoidance-like": 8.729266627819555,
+   "avoidance-like count": 258,
+   "avoidance-like upper95": 9.862002247461056,
+   "band": "475 to 490 km",
+   "drag make-up": 15.191630681747986,
+   "drag make-up count": 449,
+   "drag make-up upper95": 16.66396744204172,
+   "exposure_days": 10795.236761319824,
+   "passes_under_1km": 14.269340642371835,
+   "passes_under_5km": 432.3196610562075,
+   "satellites": 3238
+  },
+  {
+   "avoidance-like": 3.6246797319822486,
+   "avoidance-like count": 2,
+   "avoidance-like upper95": 13.09358947955057,
+   "band": "490 to 530 km",
+   "drag make-up": 9.061699329955621,
+   "drag make-up count": 5,
+   "drag make-up upper95": 21.14698339697958,
+   "exposure_days": 201.53504695999925,
+   "passes_under_1km": 30.4375,
+   "passes_under_5km": 720.8153409090909,
+   "satellites": 44
+  },
+  {
+   "avoidance-like": 0.622813113989564,
+   "avoidance-like count": 3,
+   "avoidance-like upper95": 1.8201242139210199,
+   "band": "530 to 600 km",
+   "drag make-up": 0.622813113989564,
+   "drag make-up count": 3,
+   "drag make-up upper95": 1.8201242139210199,
+   "exposure_days": 1759.3560176999754,
+   "passes_under_1km": 21.653523489932887,
+   "passes_under_5km": 572.5927013422819,
+   "satellites": 298
+  }
+ ],
+ "bound": {
+  "band": "530 to 600 km",
+  "exposure_days": 1759.3560176999754,
+  "exposure_years": 4.816854257905477,
+  "injection": [
+   {
+    "dv_cm_s": 10,
+    "hi95": 0.6871009361299781,
+    "lo95": 0.6109905535659118,
+    "recall": 0.65,
+    "trials": 600
+   },
+   {
+    "dv_cm_s": 16,
+    "hi95": 0.9872949155592883,
+    "lo95": 0.9632857238042716,
+    "recall": 0.9783333333333334,
+    "trials": 600
+   },
+   {
+    "dv_cm_s": 20,
+    "hi95": 0.9954090778222962,
+    "lo95": 0.9783564551842772,
+    "recall": 0.99,
+    "trials": 600
+   },
+   {
+    "dv_cm_s": 30,
+    "hi95": 1.0,
+    "lo95": 0.9936382989862994,
+    "recall": 1.0,
+    "trials": 600
+   },
+   {
+    "dv_cm_s": 40,
+    "hi95": 0.9920887570323066,
+    "lo95": 0.9717403929844038,
+    "recall": 0.985,
+    "trials": 600
+   }
+  ],
+  "rows": [
+   {
+    "dv_cm_s": 10,
+    "max_rate": 4.4373908541142155,
+    "max_share_of_fcc": 0.10530939461793482,
+    "recall_lo95": 0.6109905535659118
+   },
+   {
+    "dv_cm_s": 16,
+    "max_rate": 2.8145376053496296,
+    "max_share_of_fcc": 0.0667953896993254,
+    "recall_lo95": 0.9632857238042716
+   },
+   {
+    "dv_cm_s": 20,
+    "max_rate": 2.7711820982802156,
+    "max_share_of_fcc": 0.06576646474028097,
+    "recall_lo95": 0.9783564551842772
+   },
+   {
+    "dv_cm_s": 30,
+    "max_rate": 2.728562191201269,
+    "max_share_of_fcc": 0.06475499724491822,
+    "recall_lo95": 0.9936382989862994
+   },
+   {
+    "dv_cm_s": 40,
+    "max_rate": 2.790049599581761,
+    "max_share_of_fcc": 0.06621423353174918,
+    "recall_lo95": 0.9717403929844038
+   }
+  ],
+  "satellites": 298,
+  "steps": 6,
+  "steps_upper95_per_year": 2.711203894343559
+ },
+ "conjunction_days": 12,
+ "constants": {
+  "confidence": 0.95,
+  "control_alt_hi": 600.0,
+  "control_alt_lo": 400.0,
+  "far_share": 0.05,
+  "high_band_hi": 600.0,
+  "high_band_lo": 530.0,
+  "pass_limit_km": 1.0,
+  "recorder_every_hours": 4,
+  "sizes_m": [
+   50,
+   500
+  ],
+  "snr_min": 5.0,
+  "window_days": 1.5
+ },
+ "coverage": {
+  "control_exposure_days": 1264.3658778300824,
+  "control_objects": 245,
+  "first_epoch": "2026-10-03T04:12Z",
+  "headline_exposure_days": 41183.36430575983,
+  "headline_exposure_years": 112.75390638127264,
+  "headline_satellites": 9479,
+  "last_epoch": "2026-10-17T16:22Z",
+  "regimes": {
+   "descending": 758,
+   "on-station": 10221,
+   "raising": 205,
+   "short": 1
+  },
+  "span_days": 14.50708009599532
+ },
+ "curve": [
+  {
+   "avoidance-like": 33.16071362846381,
+   "control_far": 12.421839497087953,
+   "drag make-up": 39.25362891671057,
+   "dv_cm_s": 2.79,
+   "threshold_m": 50
+  },
+  {
+   "avoidance-like": 26.46471502202086,
+   "control_far": 7.510879695913647,
+   "drag make-up": 38.34900393941629,
+   "dv_cm_s": 4.18,
+   "threshold_m": 75
+  },
+  {
+   "avoidance-like": 20.74429237148351,
+   "control_far": 3.7554398479568234,
+   "drag make-up": 36.53975398482773,
+   "dv_cm_s": 5.57,
+   "threshold_m": 100
+  },
+  {
+   "avoidance-like": 15.786592741017806,
+   "control_far": 1.4443999415218551,
+   "drag make-up": 33.373566564297754,
+   "dv_cm_s": 6.96,
+   "threshold_m": 125
+  },
+  {
+   "avoidance-like": 11.893157789721842,
+   "control_far": 1.155519953217484,
+   "drag make-up": 29.57768920859235,
+   "dv_cm_s": 8.36,
+   "threshold_m": 150
+  },
+  {
+   "avoidance-like": 8.735839241518281,
+   "control_far": 0.577759976608742,
+   "drag make-up": 25.152121917711515,
+   "dv_cm_s": 9.75,
+   "threshold_m": 175
+  },
+  {
+   "avoidance-like": 6.181604011510905,
+   "control_far": 0.288879988304371,
+   "drag make-up": 20.32745537214203,
+   "dv_cm_s": 11.14,
+   "threshold_m": 200
+  },
+  {
+   "avoidance-like": 4.629551354388368,
+   "control_far": 0.288879988304371,
+   "drag make-up": 15.759986124038562,
+   "dv_cm_s": 12.53,
+   "threshold_m": 225
+  },
+  {
+   "avoidance-like": 3.3790403563639235,
+   "control_far": 0.288879988304371,
+   "drag make-up": 11.706911470867137,
+   "dv_cm_s": 13.93,
+   "threshold_m": 250
+  },
+  {
+   "avoidance-like": 2.4832842513960594,
+   "control_far": 0.0,
+   "drag make-up": 8.611675028948477,
+   "dv_cm_s": 15.32,
+   "threshold_m": 275
+  },
+  {
+   "avoidance-like": 1.7471678483036561,
+   "control_far": 0.0,
+   "drag make-up": 6.323505968733537,
+   "dv_cm_s": 16.71,
+   "threshold_m": 300
+  },
+  {
+   "avoidance-like": 1.2948553596565167,
+   "control_far": 0.0,
+   "drag make-up": 4.6827645883468545,
+   "dv_cm_s": 18.1,
+   "threshold_m": 325
+  },
+  {
+   "avoidance-like": 1.0287891898640817,
+   "control_far": 0.0,
+   "drag make-up": 3.441122462648825,
+   "dv_cm_s": 19.5,
+   "threshold_m": 350
+  },
+  {
+   "avoidance-like": 0.6829031691339164,
+   "control_far": 0.0,
+   "drag make-up": 2.5364974853545466,
+   "dv_cm_s": 20.89,
+   "threshold_m": 375
+  },
+  {
+   "avoidance-like": 0.4257058716678959,
+   "control_far": 0.0,
+   "drag make-up": 1.729430103650827,
+   "dv_cm_s": 22.28,
+   "threshold_m": 400
+  },
+  {
+   "avoidance-like": 0.2660661697924349,
+   "control_far": 0.0,
+   "drag make-up": 1.3214619766357603,
+   "dv_cm_s": 23.67,
+   "threshold_m": 425
+  },
+  {
+   "avoidance-like": 0.21285293583394796,
+   "control_far": 0.0,
+   "drag make-up": 0.9844448282320093,
+   "dv_cm_s": 25.07,
+   "threshold_m": 450
+  },
+  {
+   "avoidance-like": 0.15963970187546095,
+   "control_far": 0.0,
+   "drag make-up": 0.7006409137867453,
+   "dv_cm_s": 26.46,
+   "threshold_m": 475
+  },
+  {
+   "avoidance-like": 0.12416421256980296,
+   "control_far": 0.0,
+   "drag make-up": 0.5143945949320409,
+   "dv_cm_s": 27.85,
+   "threshold_m": 500
+  }
+ ],
+ "dodge_baseline": {
+  "available": true,
+  "file": "engine/maneuvers.py",
+  "jumps": 20737,
+  "jumps_per_object_year": 50.39691419256593,
+  "objects": 11162,
+  "span_days": 13.4644987,
+  "threshold_km": 0.25
+ },
+ "examples": [
+  {
+   "alt_km": 462.4699420030802,
+   "da_m": [
+    0.0,
+    -76.2,
+    -115.8,
+    -153.3,
+    -175.6,
+    -157.7,
+    -107.1,
+    -139.8,
+    -106.3,
+    -183.0,
+    -241.2,
+    19.4,
+    -55.4,
+    -92.2,
+    -128.0,
+    -165.0,
+    -226.4,
+    -86.1,
+    -86.6,
+    -124.6,
+    -157.7,
+    -46.3,
+    -90.7
+   ],
+   "events": [
+    {
+     "cls": "drag make-up",
+     "step_m": 186.5,
+     "t_mid": 281.1846457799993
+    },
+    {
+     "cls": "drag make-up",
+     "step_m": 377.2,
+     "t_mid": 283.79485955000064
+    },
+    {
+     "cls": "drag make-up",
+     "step_m": 197.2,
+     "t_mid": 286.4703354299993
+    },
+    {
+     "cls": "drag make-up",
+     "step_m": 177.3,
+     "t_mid": 288.2648507899998
+    }
+   ],
+   "name": "STARLINK-35057",
+   "norad": 65525,
+   "t": [
+    "2026-10-06T03:36Z",
+    "2026-10-07T04:39Z",
+    "2026-10-07T17:11Z",
+    "2026-10-08T04:09Z",
+    "2026-10-08T18:15Z",
+    "2026-10-09T14:36Z",
+    "2026-10-10T04:42Z",
+    "2026-10-10T10:58Z",
+    "2026-10-10T21:56Z",
+    "2026-10-11T04:11Z",
+    "2026-10-11T10:27Z",
+    "2026-10-12T03:41Z",
+    "2026-10-12T22:29Z",
+    "2026-10-13T04:44Z",
+    "2026-10-13T11:00Z",
+    "2026-10-13T17:16Z",
+    "2026-10-14T04:14Z",
+    "2026-10-14T18:20Z",
+    "2026-10-15T02:09Z",
+    "2026-10-15T22:31Z",
+    "2026-10-16T14:11Z",
+    "2026-10-16T22:01Z",
+    "2026-10-17T02:42Z"
+   ],
+   "t_days": [
+    278.1502787200003,
+    279.1943763300004,
+    279.7164171300001,
+    280.1731984899993,
+    280.76048842999944,
+    281.60880312999916,
+    282.1961021700005,
+    282.4571220100009,
+    282.9139153400008,
+    283.17492915000076,
+    283.4359428100012,
+    284.15377629000005,
+    284.93685178000067,
+    285.1978755000013,
+    285.45889467999893,
+    285.7199124599993,
+    286.17668741999955,
+    286.76398343999904,
+    287.09025956999926,
+    287.9385782299991,
+    288.5911233500005,
+    288.91740776999956,
+    289.1131718200004
+   ],
+   "why": "most drag make-up boosts"
+  },
+  {
+   "alt_km": 462.9750230749223,
+   "da_m": [
+    0.0,
+    66.3,
+    44.7,
+    10.5,
+    -25.9,
+    -22.5,
+    -30.5,
+    -159.5,
+    219.9,
+    181.9,
+    161.3,
+    70.7,
+    -78.6,
+    23.3,
+    10.0,
+    2899.5,
+    102.1,
+    45.2,
+    23.9
+   ],
+   "events": [
+    {
+     "cls": "drag make-up",
+     "step_m": 316.1,
+     "t_mid": 282.0359366150007
+    }
+   ],
+   "name": "STARLINK-34435",
+   "norad": 64602,
+   "t": [
+    "2026-10-06T03:50Z",
+    "2026-10-06T19:28Z",
+    "2026-10-07T11:06Z",
+    "2026-10-07T17:22Z",
+    "2026-10-08T13:41Z",
+    "2026-10-08T16:48Z",
+    "2026-10-09T10:00Z",
+    "2026-10-10T15:42Z",
+    "2026-10-11T22:00Z",
+    "2026-10-12T00:00Z",
+    "2026-10-12T14:36Z",
+    "2026-10-13T01:33Z",
+    "2026-10-13T14:03Z",
+    "2026-10-15T06:42Z",
+    "2026-10-16T06:09Z",
+    "2026-10-16T15:32Z",
+    "2026-10-17T04:00Z",
+    "2026-10-17T06:00Z",
+    "2026-10-17T08:00Z"
+   ],
+   "t_days": [
+    278.16034921000124,
+    278.8117205399992,
+    279.46308296999996,
+    279.72362596999994,
+    280.57039127999985,
+    280.70066239999954,
+    281.41715573000135,
+    282.65471750000006,
+    283.9166898099995,
+    284.0000231499998,
+    284.60884357000117,
+    285.06480134000105,
+    285.5858812500012,
+    287.2794014900012,
+    288.2564446700006,
+    288.64753497000095,
+    289.1666897999992,
+    289.2500231499998,
+    289.33335646999933
+   ],
+   "why": "biggest single bad set, correctly ignored"
+  },
+  {
+   "alt_km": 249.5558136078398,
+   "da_m": [
+    0.0,
+    -980.2,
+    2579.7,
+    5789.6,
+    9304.3,
+    12313.8
+   ],
+   "events": [],
+   "launch_date": "2026-10-13",
+   "name": "STARLINK-38435",
+   "norad": 101004,
+   "t": [
+    "2026-10-15T06:00Z",
+    "2026-10-15T14:00Z",
+    "2026-10-16T06:00Z",
+    "2026-10-16T14:00Z",
+    "2026-10-16T22:00Z",
+    "2026-10-17T06:56Z"
+   ],
+   "t_days": [
+    287.2500231499998,
+    287.5833680600011,
+    288.2500231499998,
+    288.5833680600011,
+    288.9166898099995,
+    289.28949439999957
+   ],
+   "why": "orbit raising after its launch on 2026-10-13"
+  }
+ ],
+ "expected_fcc_events_in_exposure": 4751.078047282783,
+ "far": [
+  {
+   "control_events": 43,
+   "far_per_year": 12.421839497087953,
+   "far_upper95": 16.7321362836444,
+   "threshold_m": 50
+  },
+  {
+   "control_events": 26,
+   "far_per_year": 7.510879695913647,
+   "far_upper95": 11.00517899157619,
+   "threshold_m": 75
+  },
+  {
+   "control_events": 13,
+   "far_per_year": 3.7554398479568234,
+   "far_upper95": 6.421916512839274,
+   "threshold_m": 100
+  },
+  {
+   "control_events": 5,
+   "far_per_year": 1.4443999415218551,
+   "far_upper95": 3.3707476346062495,
+   "threshold_m": 125
+  },
+  {
+   "control_events": 4,
+   "far_per_year": 1.155519953217484,
+   "far_upper95": 2.958590016768799,
+   "threshold_m": 150
+  },
+  {
+   "control_events": 2,
+   "far_per_year": 0.577759976608742,
+   "far_upper95": 2.0870676889548307,
+   "threshold_m": 175
+  },
+  {
+   "control_events": 1,
+   "far_per_year": 0.288879988304371,
+   "far_upper95": 1.6095362776105548,
+   "threshold_m": 200
+  },
+  {
+   "control_events": 1,
+   "far_per_year": 0.288879988304371,
+   "far_upper95": 1.6095362776105548,
+   "threshold_m": 225
+  },
+  {
+   "control_events": 1,
+   "far_per_year": 0.288879988304371,
+   "far_upper95": 1.6095362776105548,
+   "threshold_m": 250
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 275
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 300
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 325
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 350
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 375
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 400
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 425
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 450
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 475
+  },
+  {
+   "control_events": 0,
+   "far_per_year": 0.0,
+   "far_upper95": 1.065643453560668,
+   "threshold_m": 500
+  }
+ ],
+ "fcc": {
+  "combined_rate": 42.1367046141817,
+  "gen1": 65137,
+  "gen1_rate_stated": 36,
+  "gen2": 142015,
+  "gen2_rate_stated": 46,
+  "implied_fleet_gen1": 3631.1491529304026,
+  "implied_fleet_gen2": 6195.769081462016,
+  "letter_date": "2026-07-01",
+  "pdf_sha256": "0ad265aedaca93827bd6a273f94e1aaed24e3c71d725fea7e6013787143b658c",
+  "period_days": 182,
+  "period_end": "2026-05-31",
+  "period_start": "2025-12-01",
+  "period_years": 0.49828884325804246,
+  "quote_counts": "Using this very conservative threshold, along with additional miss-distance-based criteria, SpaceX Gen 1 satellites performed 65,137 propulsive maneuvers over the reporting period, averaging approximately 36 maneuvers per satellite, per year and SpaceX Gen 2 satellites performed 142,015 propulsive maneuvers over the reporting period, averaging approximately 46 maneuvers per satellite, per year.",
+  "quote_threshold": "SpaceX satellites will maneuver when the probability of collision is greater than 3e-7 (3 in 10,000,000 chance of collision), as opposed to the industry standard of 1e-4 (1 in 10,000 chance of collision).",
+  "satcat_file": "satcat-2026-10-17.csv.gz",
+  "satcat_fleet_first": 9120,
+  "satcat_fleet_last": 10506,
+  "satcat_mean_fleet": 9866.142857142857,
+  "total": 207152,
+  "url": "https://api-prod.fcc.gov/icfs-attachment/exp/api/v1/bff0244acfb947505791bf252f851ce6"
+ },
+ "generated_from": {
+  "days": {
+   "2026-10-06": "sealed-ok",
+   "2026-10-07": "sealed-ok",
+   "2026-10-08": "sealed-ok",
+   "2026-10-09": "sealed-ok",
+   "2026-10-10": "sealed-ok",
+   "2026-10-11": "sealed-ok",
+   "2026-10-12": "sealed-ok",
+   "2026-10-13": "sealed-ok",
+   "2026-10-14": "sealed-ok",
+   "2026-10-15": "sealed-ok",
+   "2026-10-16": "sealed-ok",
+   "2026-10-17": "unsealed"
+  },
+  "rows": {
+   "control": 175450,
+   "gp": 218898,
+   "supgp": 423268
+  },
+  "series": {
+   "control": 245,
+   "gp": 11153,
+   "supgp": 11184
+  },
+  "supgp_fetches": [
+   "starlink-supgp-20261017T1904Z.json"
+  ]
+ },
+ "held_out": {
+  "by_launch_age": [
+   {
+    "descending": 0,
+    "label": "launched in the window",
+    "on-station": 0,
+    "raising": 27,
+    "short": 0
+   },
+   {
+    "descending": 1,
+    "label": "0 to 20 days before",
+    "on-station": 21,
+    "raising": 31,
+    "short": 0
+   },
+   {
+    "descending": 0,
+    "label": "21 to 40 days before",
+    "on-station": 24,
+    "raising": 30,
+    "short": 0
+   },
+   {
+    "descending": 0,
+    "label": "41 to 60 days before",
+    "on-station": 157,
+    "raising": 56,
+    "short": 0
+   },
+   {
+    "descending": 703,
+    "label": "over a year before",
+    "on-station": 7295,
+    "raising": 37,
+    "short": 1
+   }
+  ],
+  "fcc_removed": {
+   "listed": 415,
+   "regimes": {
+    "descending": 189,
+    "on-station": 62
+   },
+   "still_in_orbit": 251
+  }
+ },
+ "injection": [
+  {
+   "dv_cm_s": 2,
+   "hi95": 0.06912239835887397,
+   "lo95": 0.03372599429775079,
+   "recall": 0.04844290657439446,
+   "trials": 578
+  },
+  {
+   "dv_cm_s": 4,
+   "hi95": 0.1045263241165533,
+   "lo95": 0.06019459318444217,
+   "recall": 0.07958477508650519,
+   "trials": 578
+  },
+  {
+   "dv_cm_s": 6,
+   "hi95": 0.17826056821137096,
+   "lo95": 0.12051748581909436,
+   "recall": 0.14705882352941177,
+   "trials": 578
+  },
+  {
+   "dv_cm_s": 8,
+   "hi95": 0.2593917133999643,
+   "lo95": 0.19174158920946133,
+   "recall": 0.22375215146299485,
+   "trials": 581
+  },
+  {
+   "dv_cm_s": 10,
+   "hi95": 0.5010362775892137,
+   "lo95": 0.42017521004149383,
+   "recall": 0.4603448275862069,
+   "trials": 580
+  },
+  {
+   "dv_cm_s": 12,
+   "hi95": 0.6726708317750105,
+   "lo95": 0.5945249927817204,
+   "recall": 0.6344827586206897,
+   "trials": 580
+  },
+  {
+   "dv_cm_s": 14,
+   "hi95": 0.7498411659207254,
+   "lo95": 0.6763917816293838,
+   "recall": 0.7145328719723183,
+   "trials": 578
+  },
+  {
+   "dv_cm_s": 16,
+   "hi95": 0.8260067809914895,
+   "lo95": 0.7604769486189997,
+   "recall": 0.7951807228915663,
+   "trials": 581
+  },
+  {
+   "dv_cm_s": 20,
+   "hi95": 0.907944241818563,
+   "lo95": 0.8553327805494915,
+   "recall": 0.8842105263157894,
+   "trials": 570
+  },
+  {
+   "dv_cm_s": 25,
+   "hi95": 0.9691202489256983,
+   "lo95": 0.9349060833781624,
+   "recall": 0.9550173010380623,
+   "trials": 578
+  },
+  {
+   "dv_cm_s": 30,
+   "hi95": 0.979110481259537,
+   "lo95": 0.9498322618270447,
+   "recall": 0.9675213675213675,
+   "trials": 585
+  },
+  {
+   "dv_cm_s": 40,
+   "hi95": 0.9905921013572146,
+   "lo95": 0.9685023342566582,
+   "recall": 0.9827288428324698,
+   "trials": 579
+  },
+  {
+   "dv_cm_s": 60,
+   "hi95": 0.9951839435516507,
+   "lo95": 0.9773059517519334,
+   "recall": 0.9895104895104895,
+   "trials": 572
+  }
+ ],
+ "noise": {
+  "bad_sets": 298.0,
+  "outlier_share": 0.0029887570581804686,
+  "sigma_km": 0.012931745492185518,
+  "tested_sets": 99707
+ },
+ "rates": {
+  "avoidance-like": {
+   "count": 985,
+   "hi95": 9.314435173827729,
+   "lo95": 8.187592861004827,
+   "rate": 8.735839241518281
+  },
+  "drag make-up": {
+   "count": 2836,
+   "hi95": 26.13294092355338,
+   "lo95": 24.20625215797555,
+   "rate": 25.152121917711515
+  },
+  "large on-station": {
+   "count": 5,
+   "hi95": 0.10629979575525345,
+   "lo95": 0.0,
+   "rate": 0.04434436163207249
+  },
+  "lowering": {
+   "count": 0,
+   "hi95": 0.0,
+   "lo95": 0.0,
+   "rate": 0.0
+  },
+  "other": {
+   "count": 0,
+   "hi95": 0.0,
+   "lo95": 0.0,
+   "rate": 0.0
+  },
+  "raising": {
+   "count": 0,
+   "hi95": 0.0,
+   "lo95": 0.0,
+   "rate": 0.0
+  }
+ },
+ "share_of_fcc": {
+  "hi95": 0.221052767631307,
+  "rate": 0.19360980740206774
+ },
+ "supgp_rates": {
+  "avoidance-like": 6.607225651651256,
+  "drag make-up": 14.978478175733837,
+  "exposure_days": 92760.49166669957,
+  "large on-station": 0.14568971937490852,
+  "lowering": 0.0,
+  "other": 0.0,
+  "raising": 0.0,
+  "satellites": 9479
+ },
+ "synthetic": {
+  "by_dv": [
+   {
+    "burns": 879,
+    "detected": 0,
+    "dv_cm_s": 2,
+    "precision": NaN,
+    "recall": 0.0
+   },
+   {
+    "burns": 872,
+    "detected": 0,
+    "dv_cm_s": 4,
+    "precision": NaN,
+    "recall": 0.0
+   },
+   {
+    "burns": 877,
+    "detected": 6,
+    "dv_cm_s": 6,
+    "precision": 1.0,
+    "recall": 0.0068415051311288486
+   },
+   {
+    "burns": 892,
+    "detected": 91,
+    "dv_cm_s": 8,
+    "precision": 1.0,
+    "recall": 0.10201793721973094
+   },
+   {
+    "burns": 887,
+    "detected": 569,
+    "dv_cm_s": 10,
+    "precision": 1.0,
+    "recall": 0.6414881623449831
+   },
+   {
+    "burns": 873,
+    "detected": 844,
+    "dv_cm_s": 12,
+    "precision": 1.0,
+    "recall": 0.9667812142038946
+   },
+   {
+    "burns": 873,
+    "detected": 870,
+    "dv_cm_s": 14,
+    "precision": 0.9988505747126437,
+    "recall": 0.995418098510882
+   },
+   {
+    "burns": 874,
+    "detected": 871,
+    "dv_cm_s": 16,
+    "precision": 1.0,
+    "recall": 0.9965675057208238
+   },
+   {
+    "burns": 878,
+    "detected": 878,
+    "dv_cm_s": 20,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   {
+    "burns": 869,
+    "detected": 866,
+    "dv_cm_s": 25,
+    "precision": 0.9988452655889145,
+    "recall": 0.9953970080552359
+   },
+   {
+    "burns": 888,
+    "detected": 886,
+    "dv_cm_s": 30,
+    "precision": 0.9988713318284425,
+    "recall": 0.9966216216216216
+   },
+   {
+    "burns": 870,
+    "detected": 870,
+    "dv_cm_s": 40,
+    "precision": 1.0,
+    "recall": 1.0
+   },
+   {
+    "burns": 871,
+    "detected": 868,
+    "dv_cm_s": 60,
+    "precision": 1.0,
+    "recall": 0.9965556831228473
+   }
+  ],
+  "noise_only_days": 4289.742389869635,
+  "noise_only_false_alarms": 1,
+  "noise_only_series": 400,
+  "outlier_share": 0.0029887570581804686,
+  "sigma_m": 12.931745492185518
+ },
+ "threshold": {
+  "control_events": 2,
+  "dv_cm_s_at_470km": 9.748070608547874,
+  "far_per_year": 0.577759976608742,
+  "far_upper95": 2.0870676889548307,
+  "m": 175,
+  "rule": "smallest grid value with control FAR 95% upper <= 5% of the FCC rate"
+ }
+}
