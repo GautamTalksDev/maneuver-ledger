@@ -1,0 +1,45 @@
+cff-version: 1.2.0
+message: "If you use Maneuver Ledger results or code, please cite it as below."
+type: software
+title: "Maneuver Ledger: Starlink collision-avoidance burns against public orbit data"
+abstract: >-
+  Maneuver Ledger looks for Starlink collision-avoidance burns in public orbit
+  data (CelesTrak GP and SupGP element sets recorded by DODGE) and reconciles
+  them, as rates, with the avoidance manoeuvres SpaceX reported to the FCC. It
+  measures the detection limit with passive debris, injected burns and
+  synthetic histories, and bounds how many avoidance burns of a given size the
+  public data could be hiding.
+authors:
+  - family-names: Khosla
+    given-names: Gautam
+    email: developwith.gt@gmail.com
+version: "0.1.0"
+date-released: "2026-10-17"
+url: "https://dodge.gautamkhosla.com/ledger/"
+repository-code: "https://github.com/GautamTalksDev/maneuver-ledger"
+license: Apache-2.0
+keywords:
+  - Starlink
+  - collision avoidance
+  - space situational awareness
+  - orbit determination
+  - SGP4
+  - open data
+references:
+  - type: database
+    title: "CelesTrak GP and SupGP element sets, and SATCAT"
+    authors:
+      - name: CelesTrak
+    url: "https://celestrak.org"
+  - type: dataset
+    title: "DODGE: an open daily screen of close approaches to Starlink satellites"
+    authors:
+      - family-names: Khosla
+        given-names: Gautam
+    url: "https://dodge.gautamkhosla.com"
+    repository-code: "https://github.com/GautamTalksDev/dodge"
+  - type: report
+    title: "SpaceX Gen 1 and Gen 2 Semi-Annual Reports (cover letter dated July 1, 2026)"
+    authors:
+      - name: SpaceX
+    url: "https://api-prod.fcc.gov/icfs-attachment/exp/api/v1/bff0244acfb947505791bf252f851ce6"

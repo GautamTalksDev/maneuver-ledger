@@ -2,6 +2,15 @@
 
 **How many of Starlink's collision-avoidance burns can public orbit data see?**
 
+[![ci](https://github.com/GautamTalksDev/maneuver-ledger/actions/workflows/ci.yml/badge.svg)](https://github.com/GautamTalksDev/maneuver-ledger/actions/workflows/ci.yml)
+[![Code: Apache-2.0](https://img.shields.io/badge/code-Apache%202.0-informational)](LICENSE)
+[![Derived data: CC BY 4.0](https://img.shields.io/badge/derived%20data-CC%20BY%204.0-informational)](LICENSE-DATA)
+
+**Result in one line:** public element sets cannot rebuild the 207,152 avoidance manoeuvres SpaceX filed with the FCC;
+in the cleanest test, burns of 16 cm/s or more are at most 2.8 per satellite-year, 8% of the lower filed rate.
+
+Results page: [dodge.gautamkhosla.com/ledger/](https://dodge.gautamkhosla.com/ledger/) (the same numbers as `site/index.html`).
+
 ```
 AMBITION PASS (17 Oct 2026)
 Literal ask:  "Reconstruct Starlink's collision-avoidance manoeuvres from public orbit data, and reconcile the total
@@ -64,82 +73,169 @@ three independent ways, is the result. The pipeline is built to tighten the boun
 
 ## How it works
 
-```
-DODGE recorder (every 4 h, sealed daily)      CelesTrak SupGP (one cached fetch)
-              \                                   /
-               ledger/sources.py  (SHA-256 checked against DODGE's manifests)
-                         |
-               ledger/elements.py  SGP4 mean semi-major axis at each set's own epoch
-                         |
-               ledger/detect.py    robust steps: medians of 3 to 5 sets per side, local trend from
-                         |         consecutive pairs, 5 sigma of the satellite's own noise, consensus check
-               ledger/classify.py  raising / descending / on-station; drag make-up vs avoidance-like
-                         |
-               ledger/pipeline.py  threshold from passive debris, rates, bootstrap, injections,
-                         |         held-out checks, GP vs SupGP with time slides, the bound
-               out/summary.json  out/events.csv  out/noise.csv  ->  ledger/page.py  ->  site/index.html
+```mermaid
+flowchart LR
+  CT["CelesTrak<br/>public GP and Starlink SupGP"] -->|every 4 h| DODGE[("DODGE recorder<br/>sealed day files")]
+  CT -->|one cached fetch| SUP["SupGP, newest hours"]
+  SAT["CelesTrak SATCAT"] --> DODGE
+  DODGE --> SRC["sources.py<br/>SHA-256 against DODGE's manifests"]
+  SUP --> SRC
+  SRC --> EL["elements.py<br/>SGP4 mean semi-major axis"]
+  EL --> DET["detect.py<br/>robust steps"]
+  DET --> CLS["classify.py<br/>regime and class"]
+  FCC["FCC filing PDF<br/>SHA-256 pinned"] --> FL["fleet.py<br/>filed rate per satellite-year"]
+  DODGE --> FL
+  CLS --> REC["pipeline.py and reconcile.py<br/>threshold, rates, injections, bound"]
+  FL --> REC
+  REC --> OUT[("out/summary.json<br/>events.csv, noise.csv")]
+  OUT --> PAGE["page.py<br/>site/index.html"]
+  OUT --> RM["readme.py<br/>the results table above"]
 ```
 
 A burn that is short compared with the spacing between element sets changes the orbit's mean semi-major axis `a`
 in one step: `da = 2 a dv / v` for an along-track burn (Gauss). Drag changes it slowly. So the detector looks for
 steps in each satellite's history of `a`, measured with SGP4's own mean elements (which remove the 10 km swings that
-Earth's oblateness puts on the osculating `a` every orbit). Details, every assumption and every limit:
-[docs/METHODS.md](docs/METHODS.md).
+Earth's oblateness puts on the osculating `a` every orbit).
 
-## Run it
+```mermaid
+flowchart TD
+  G["each gap between two consecutive element sets"] --> Q1{"gap at most 2 days, and at least<br/>3 sets each side within 1.5 days?"}
+  Q1 -->|no| X["not tested, no exposure"]
+  Q1 -->|yes| TR["local trend: median slope of consecutive pairs,<br/>leaving out the pair across the gap"]
+  TR --> LV["carry each side to the middle of the gap,<br/>level = median of each side"]
+  LV --> ST["step = right level minus left level,<br/>standard error from the satellite's own scatter"]
+  ST --> Q2{"at least 60% of each side's sets<br/>agree with its level?"}
+  Q2 -->|no| X
+  Q2 -->|yes| Q3{"step at least the threshold,<br/>at least 5 standard errors,<br/>a local maximum?"}
+  Q3 -->|no| N["tested, no event"]
+  Q3 -->|yes| RF["refine to the neighbouring gap<br/>with the best two-level fit"] --> EV["event: size in m and cm/s, class"]
+```
 
-Inside WSL (Ubuntu), Python 3.12:
+The reconciliation compares rates, never counts, because the filing covers December 2025 to May 2026 and the data
+covers October 2026:
+
+```mermaid
+flowchart LR
+  F["filed: 65,137 + 142,015 manoeuvres<br/>in 182 days"] --> R["filed rate = total / (mean fleet x 182 / 365.25)"]
+  S["CelesTrak SATCAT: mean Starlink fleet<br/>over the filing period"] --> R
+  K["k = every step in the low-drag band,<br/>any class"] --> U["U = upper end of the two-sided 95%<br/>Garwood interval of k, per satellite-year"]
+  I["burns of known size injected into<br/>the same satellites' real histories"] --> L["L = lower end of the 95%<br/>Wilson interval of recall"]
+  U --> B["most burns of that size per satellite-year = U / L<br/>(each end 97.5% one-sided,<br/>joint coverage at least about 95%)"]
+  L --> B
+  G1["stated in the filing:<br/>about 36 per satellite-year, Gen 1"] --> SH["share shown on the page<br/>= (U / L) / stated Gen 1 rate"]
+  B --> SH
+  B --> SC["share of the combined rate<br/>= (U / L) / filed rate"]
+  R --> SC
+```
+
+Every assumption and every limit: [docs/METHODS.md](docs/METHODS.md). Components and data flow:
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Sources and their terms: [docs/DATA.md](docs/DATA.md). Common
+questions, including why public data cannot see small burns: [docs/FAQ.md](docs/FAQ.md).
+
+## Quickstart
+
+Linux or WSL (Ubuntu 24.04), Python 3.12, no accounts or keys:
 
 ```bash
-cd ~/projects/maneuver-ledger
+git clone https://github.com/GautamTalksDev/maneuver-ledger.git && cd maneuver-ledger
 python3 -m venv .venv && .venv/bin/pip install --require-hashes --no-deps -r requirements.txt
+.venv/bin/python -m unittest discover -s tests -p "test_*.py"   # runs without any downloaded data
 .venv/bin/python -m ledger.pipeline sync   # new DODGE day files + at most one CelesTrak SupGP download
 .venv/bin/python -m ledger.pipeline all    # about 3 minutes on one core; writes out/, site/, README results
-.venv/bin/python -m unittest discover -s tests -p "test_*.py"
 ```
 
 `sync` is the only step that touches the network. It reads DODGE's public GitHub releases (no login) and fetches
 CelesTrak's Starlink SupGP file at most once per 2 hours, as CelesTrak's usage policy asks; a 403 ("not updated") is
-never retried. Everything after it is offline and seeded, so the outputs are reproducible.
+never retried. Everything after it is offline and seeded. A `sync` today gives you more days than the committed
+results used, so your numbers will be newer, not identical. To get the committed numbers exactly, use the next
+section.
+
+## Reproduce the committed results byte for byte
+
+The committed outputs used DODGE's sealed days 6 to 16 October, DODGE's files for 17 October as downloaded before
+DODGE sealed that day, and one CelesTrak SupGP download (17 October 2026, 19:04 UTC). The last two no longer exist upstream, so they are
+attached, unchanged, to the release
+[`inputs-2026-10-17`](https://github.com/GautamTalksDev/maneuver-ledger/releases/tag/inputs-2026-10-17), and every
+input file's SHA-256 is in [`data/inputs-2026-10-17.sha256`](data/inputs-2026-10-17.sha256).
+
+```bash
+tools/reproduce.sh     # downloads the inputs, checks every SHA-256, runs the pipeline, lists changed outputs
+```
+
+It needs `curl` and `sha256sum` and no login. It ends with `git status`: no changed files means every output is
+byte-identical to the commit. One part depends on code outside this repository: the `dodge_baseline` block (DODGE's
+first manoeuvre stub, kept for comparison) runs DODGE's `engine/maneuvers.py`, found through `DODGE_DIR`. The
+committed numbers used a version not yet on DODGE's main branch; with DODGE main, or without DODGE, only that block
+of `out/summary.json` and its one row on the page change. Details: [docs/DATA.md](docs/DATA.md#reproducing).
+
+## Limits, stated first
+
+- **Different months.** Filing: December 2025 to May 2026. Data: October 2026. Rates are compared, never counts.
+- **Only the size of the orbit is measured.** Burns that change only the plane or shape, and pairs of burns that
+  cancel inside one gap between element sets, are invisible.
+- **Short window.** About two weeks; the low-drag band has a few hundred satellites. The bound tightens as DODGE
+  records.
+- **Classes are heuristics.** The bound counts every step in the band, whatever its class.
+- **Gen 1 and Gen 2 are not separated**, so the comparison uses the lower filed rate.
+- **Screening grade.** Not for operations. Not affiliated with SpaceX or Starlink.
+
+All of them, with the reasoning: [docs/METHODS.md, section 9](docs/METHODS.md#9-limits).
 
 ## Why a separate repository, and what it reuses
 
-DODGE (`~/projects/dodge`, public) already records the history and seals it. This project **reads DODGE's sealed
-releases and never records anything itself**, so there is one recorder and one source of truth. It also runs DODGE's
-first manoeuvre stub (`engine/maneuvers.py`) on the same data as a baseline and shows why it is replaced. It lives in
-its own folder because DODGE's repository has a strict release and sealing workflow that this research code should
-not touch, and because product rules keep each project in its own folder. When the method settles, `ledger/` and the
-page can move into DODGE as a module and a page under its site.
+[DODGE](https://github.com/GautamTalksDev/dodge) already records the history and seals it. This project **reads
+DODGE's sealed releases and never records anything itself**, so there is one recorder and one source of truth. It
+also runs DODGE's first manoeuvre stub (`engine/maneuvers.py`) on the same data as a baseline and shows why it is
+replaced. It lives in its own repository because DODGE has a strict release and sealing workflow that this research
+code should not touch. The results page is published under DODGE's site at
+[/ledger/](https://dodge.gautamkhosla.com/ledger/).
 
 ## Layout
 
 | Path | What |
 |---|---|
 | `ledger/` | the pipeline, one module per step, each with a docstring explaining the physics or the rule |
-| `tests/` | unit tests: physics, synthetic burns of known size, sources, statistics, page and README rules |
+| `tests/` | unit tests: physics, synthetic burns of known size, sources, statistics, page, README and docs rules |
 | `out/summary.json` | every number the page and this README show |
 | `out/events.csv` | every detected step, GP and SupGP |
 | `out/noise.csv` | per satellite: sets, span, altitude, regime, local noise |
 | `site/index.html` | the results page; `site/index.numbers.json` lists every number it prints and its source |
 | `data/fcc_2026-07-01_lists.json` | the satellites the FCC report names as removed for disposal, parsed by `tools/parse_fcc.py` |
+| `data/inputs-2026-10-17.sha256` | SHA-256 of every input file behind the committed results |
+| `tools/reproduce.sh` | byte-for-byte reproduction of the committed results |
+| `docs/` | [METHODS](docs/METHODS.md), [ARCHITECTURE](docs/ARCHITECTURE.md), [DATA](docs/DATA.md), [FAQ](docs/FAQ.md) |
 | `cache/` | downloaded inputs (not committed) |
 
 ## Rules this repository keeps
 
 - Data: CelesTrak public GP and SupGP sets, as recorded by DODGE, and the CelesTrak catalogue. No Space-Track data
-  (its user agreement restricts redistributing its data, so it is not used). SpaceX's raw ephemeris files on api.starlink.com are not used: that
-  would be a new source and needs Gautam's yes.
+  (its user agreement restricts redistributing its data, so it is not used). SpaceX's raw ephemeris files on
+  api.starlink.com are not used in this version (see [docs/DATA.md](docs/DATA.md)).
 - Every number on the page comes from `out/summary.json` (enforced by `tests/test_page.py`). No em or en dashes
   anywhere (enforced by `tests/test_repo_text.py`).
 - Screening grade. Not for operations. Not affiliated with SpaceX or Starlink.
 
-## Status
+## Security
 
-Local repository only. Not pushed, not published, not deployed. Publishing the repository and the page are
-Gautam's decisions.
+No secrets, accounts or servers. CI runs the tests with a read-only token, every third-party action pinned to a full
+commit SHA, and dependencies installed with `--require-hashes`. The results page has no scripts and a strict Content
+Security Policy. Report vulnerabilities privately: [SECURITY.md](SECURITY.md).
+
+## Cite
+
+See [CITATION.cff](CITATION.cff), or use "Cite this repository" on GitHub:
+
+> Khosla, G. (2026). *Maneuver Ledger: Starlink collision-avoidance burns against public orbit data* (version 0.1.0).
+> https://github.com/GautamTalksDev/maneuver-ledger
 
 ## Licence
 
-Code: Apache-2.0 ([LICENSE](LICENSE)). Orbit data: [CelesTrak](https://celestrak.org) (Dr T.S. Kelso), via
-[DODGE](https://github.com/GautamTalksDev/dodge). The
-[FCC filing](https://api-prod.fcc.gov/icfs-attachment/exp/api/v1/bff0244acfb947505791bf252f851ce6) is SpaceX's.
+- **Code:** Apache-2.0 ([LICENSE](LICENSE)).
+- **Derived data this repository produces** (`out/`, the numbers on the page): CC BY 4.0
+  ([LICENSE-DATA](LICENSE-DATA)). Credit "Maneuver Ledger (github.com/GautamTalksDev/maneuver-ledger), Gautam Khosla".
+- **Input data keeps its own terms:** orbit data from [CelesTrak](https://celestrak.org) (Dr T.S. Kelso), recorded
+  by [DODGE](https://github.com/GautamTalksDev/dodge), under CelesTrak's usage policy; the
+  [FCC filing](https://api-prod.fcc.gov/icfs-attachment/exp/api/v1/bff0244acfb947505791bf252f851ce6) is SpaceX's.
+  See [docs/DATA.md](docs/DATA.md).
+
+Independent work from public data. Not affiliated with SpaceX or Starlink.

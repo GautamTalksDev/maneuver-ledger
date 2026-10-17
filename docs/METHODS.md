@@ -38,7 +38,7 @@ The threshold is a probability of collision of 3e-7 (industry standard 1e-4). UR
 
 `ledger/sources.py` checks every cached day file against DODGE's sealed manifest and stops the run on a mismatch.
 Not used: Space-Track (its user agreement restricts redistributing its data) and SpaceX's raw ephemeris files on
-api.starlink.com (a new source that needs Gautam's yes; it would also give a much stronger cross-check, see section 10).
+api.starlink.com (not used in this version; they would give a much stronger cross-check, see section 10).
 
 ## 3. What is measured, and why
 
@@ -169,7 +169,7 @@ we cannot see from public data (section 10, question 3). Agreement is higher for
 1. Is a typical Starlink avoidance burn smaller than about 16 cm/s along track? If yes, the bound is the expected
    result; if most are larger, something here is wrong and we want to know what.
 2. Are the regular boosts every few days in the 460 to 490 km shells drag make-up?
-3. Do the ephemerides on api.starlink.com contain planned burns? With Gautam's yes, comparing successive SpaceX
+3. Do the ephemerides on api.starlink.com contain planned burns? Comparing successive SpaceX
    ephemeris files directly (rather than CelesTrak's SGP4 fits of them) would be the strongest next cross-check.
 
 ## 11. Growing daily

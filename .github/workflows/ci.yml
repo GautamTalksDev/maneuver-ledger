@@ -1,0 +1,30 @@
+# Tests on every push to main and every pull request. Read-only token, no secrets.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: step-security/harden-runner@351661ca32ac09a36dc5ee2d536e3128f2a3c8ed # v2.22.0
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install (hash-pinned)
+        run: python3 -m venv .venv && .venv/bin/pip install --quiet --require-hashes --no-deps -r requirements.txt
+      - name: Unit tests
+        run: .venv/bin/python -m unittest discover -s tests -p "test_*.py" -v
+      - name: Python compiles cleanly
+        run: python3 -m compileall -q ledger tools tests
+      - name: Shell scripts parse
+        run: bash -n tools/reproduce.sh

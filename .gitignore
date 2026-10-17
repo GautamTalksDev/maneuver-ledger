@@ -1,4 +1,15 @@
+# downloads and local runs
 cache/
+*.part
 .venv/
 __pycache__/
 *.pyc
+# never commit secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa*
+.wrangler/
