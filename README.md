@@ -165,8 +165,9 @@ tools/reproduce.sh     # downloads the inputs, checks every SHA-256, runs the pi
 It needs `curl` and `sha256sum` and no login. It ends with `git status`: no changed files means every output is
 byte-identical to the commit. One part depends on code outside this repository: the `dodge_baseline` block (DODGE's
 first manoeuvre stub, kept for comparison) runs DODGE's `engine/maneuvers.py`, found through `DODGE_DIR`. The
-committed numbers used a version not yet on DODGE's main branch; with DODGE main, or without DODGE, only that block
-of `out/summary.json` and its one row on the page change. Details: [docs/DATA.md](docs/DATA.md#reproducing).
+committed numbers used a version not yet on DODGE's main branch. With DODGE main, two numbers in that block of
+`out/summary.json` change and nothing else (checked 17 October 2026); without DODGE, the block and its one row on the
+page drop out. Details: [docs/DATA.md](docs/DATA.md#reproducing).
 
 ## Limits, stated first
 
