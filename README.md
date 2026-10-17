@@ -34,9 +34,9 @@ Goal:         MVP today on DODGE's 12 days, every number traced; prior example: 
 | Filed by SpaceX (FCC, 2025-12-01 to 2026-05-31) | 207,152 avoidance manoeuvres (65,137 Gen 1 + 142,015 Gen 2) |
 | Per satellite per year | 42.1 (fleet of 9,866 from CelesTrak SATCAT); stated: about 36 Gen 1, about 46 Gen 2 |
 | Public data used | 2026-10-03 to 2026-10-17, 9,479 on-station satellites, 112.8 satellite-years tested |
-| Detection threshold | 175 m of semi-major axis, about 9.7 cm/s; false alarms on passive debris 0.58 per object-year (95% upper 2.09) |
+| Detection threshold | 175 m of semi-major axis: about 9.7 cm/s at 470 km, 9.5 cm/s in the low-drag band; false alarms on passive debris 0.58 per object-year (95% upper 2.09) |
 | Steps above it, 400 to 600 km | drag make-up 25.2 per sat-year; avoidance-like 8.7 (8.2 to 9.3) |
-| Low-drag band 530 to 600 km | 6 steps of any kind in 4.8 satellite-years: at most 2.71 per sat-year (95%) |
+| Low-drag band 530 to 600 km | 6 steps of any kind in 4.8 satellite-years: at most 2.71 per sat-year (conservative 95% bound, see docs/METHODS.md section 7) |
 | Recall in that band | 98% at 16 cm/s, 65% at 10 cm/s (burns injected into real histories) |
 | Burns of 16 cm/s or more | at most 2.8 per sat-year, 8% of the lower filed rate |
 | Synthetic exam at 16 cm/s | precision 100.0%, recall 99.7% |
@@ -56,8 +56,10 @@ three independent ways, is the result. The pipeline is built to tighten the boun
 1. Open `site/index.html` (one file, no scripts). The box at the top has the three numbers.
 2. The filed rate: `ledger/fleet.py` quotes the FCC sentence word for word, with the PDF's URL and SHA-256.
    65,137 + 142,015 = 207,152 over 182 days; the average fleet comes from CelesTrak's SATCAT launch and decay dates.
-3. The bound: `out/summary.json` -> `bound`. The count of steps in the low-drag band, its Poisson upper limit,
-   divided by the recall measured by injecting burns into those same satellites' real histories.
+3. The bound: `out/summary.json` -> `bound`. The count of steps in the low-drag band, the upper end of its two-sided
+   95% Poisson interval, divided by the lower end of the recall measured by injecting burns into those same
+   satellites' real histories (`bound.rows[].max_rate`). `max_share_of_gen1` is that rate over the Gen 1 filed rate
+   (the share the page shows); `max_share_of_combined` is the same over the combined rate.
 4. Any single step: `out/events.csv` (time window, size in metres and cm/s, local trend, class, what SupGP saw).
 
 ## How it works
@@ -125,7 +127,7 @@ page can move into DODGE as a module and a page under its site.
 ## Rules this repository keeps
 
 - Data: CelesTrak public GP and SupGP sets, as recorded by DODGE, and the CelesTrak catalogue. No Space-Track data
-  (its user agreement forbids sharing analysis without approval). SpaceX's raw ephemeris files on api.starlink.com are not used: that
+  (its user agreement restricts redistributing its data, so it is not used). SpaceX's raw ephemeris files on api.starlink.com are not used: that
   would be a new source and needs Gautam's yes.
 - Every number on the page comes from `out/summary.json` (enforced by `tests/test_page.py`). No em or en dashes
   anywhere (enforced by `tests/test_repo_text.py`).
@@ -138,4 +140,6 @@ Gautam's decisions.
 
 ## Licence
 
-Code: Apache-2.0 ([LICENSE](LICENSE)). Orbit data: CelesTrak (Dr T.S. Kelso), via DODGE. The FCC filing is SpaceX's.
+Code: Apache-2.0 ([LICENSE](LICENSE)). Orbit data: [CelesTrak](https://celestrak.org) (Dr T.S. Kelso), via
+[DODGE](https://github.com/GautamTalksDev/dodge). The
+[FCC filing](https://api-prod.fcc.gov/icfs-attachment/exp/api/v1/bff0244acfb947505791bf252f851ce6) is SpaceX's.

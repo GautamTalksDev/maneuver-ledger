@@ -20,8 +20,9 @@ The threshold is a probability of collision of 3e-7 (industry standard 1e-4). UR
   so only avoidance-like events may be compared with it.
 - The filing has no fleet size. We take the average number of Starlink payloads in orbit over the 182 days from
   CelesTrak's SATCAT launch and decay dates [`fcc.satcat_mean_fleet`]. The filed rounded rates imply Gen 1 and Gen 2
-  fleets [`fcc.implied_fleet_gen1`, `fcc.implied_fleet_gen2`]; their sum agrees with SATCAT to well under 1%, which
-  checks both. The combined rate [`fcc.combined_rate`] is 207,152 divided by fleet times 182/365.25 years.
+  fleets [`fcc.implied_fleet_gen1`, `fcc.implied_fleet_gen2`]; their sum agrees with SATCAT within the rounding of
+  the filed rates. That check cannot resolve better than about 1.4%, because "approximately 36" allows 35.5 to 36.5.
+  The combined rate [`fcc.combined_rate`] is 207,152 divided by fleet times 182/365.25 years.
 - Our data is from October 2026, not the filing period. We compare rates per satellite per year, never counts.
 
 ## 2. Data
@@ -36,7 +37,7 @@ The threshold is a probability of collision of 3e-7 (industry standard 1e-4). UR
 | FCC filing | the reference rate, the satellites named as removed for disposal | the PDF, parsed once by `tools/parse_fcc.py` into `data/` |
 
 `ledger/sources.py` checks every cached day file against DODGE's sealed manifest and stops the run on a mismatch.
-Not used: Space-Track (its agreement forbids sharing analysis without approval) and SpaceX's raw ephemeris files on
+Not used: Space-Track (its user agreement restricts redistributing its data) and SpaceX's raw ephemeris files on
 api.starlink.com (a new source that needs Gautam's yes; it would also give a much stronger cross-check, see section 10).
 
 ## 3. What is measured, and why
@@ -57,10 +58,9 @@ What the raw recordings showed, and how each finding shaped the detector:
 3. **A drag make-up sawtooth.** Many satellites in the 460 to 490 km shells decay for one to three days and are then
    boosted back. These boosts dominate the visible steps.
 4. **SupGP behaves differently from GP.** In the on-station SupGP histories we inspected, the drag term (BSTAR) often
-   flips sign between consecutive fits, and SupGP and GP agree on far fewer steps than we pre-registered (section 8). One explanation is that SpaceX's
-   published ephemerides are predictions that already contain planned thrust, which CelesTrak's SGP4 fit then smooths.
-   That is an inference from the data, **not verified**. Public GP is therefore the primary source and SupGP the
-   cross-check.
+   flips sign between consecutive fits, and SupGP and GP agree on far fewer steps than we pre-registered
+   (section 8). We do not know why (one open question is in section 10). Public GP is therefore the primary source
+   and SupGP the cross-check.
 
 ## 4. The detector (`ledger/detect.py`)
 
@@ -113,13 +113,24 @@ per satellite per year of exposure. Intervals are 95%: bootstrap over whole sate
 The cleanest test is the band with the weakest drag, on-station satellites at 530 to 600 km [`bound`]:
 
 1. count **every** detected step there, whatever its class (so misclassification cannot hide a burn);
-2. take the 95% Poisson upper bound of that count per satellite-year;
+2. take the upper end of the two-sided 95% Poisson (Garwood) interval of that count, per satellite-year
+   [`bound.steps_upper95_per_year`]; on its own that end is a 97.5% one-sided bound;
 3. inject burns of known size into those same satellites' real histories and measure recall [`bound.injection`];
-4. divide (2) by the lower 95% bound of recall: the most burns of at least that size per satellite-year that are
-   consistent with what we saw [`bound.rows`].
+4. divide (2) by the lower end of the 95% Wilson interval of recall (also 97.5% one-sided): the most burns of at least
+   that size per satellite-year that are consistent with what we saw [`bound.rows[].max_rate`].
+
+Two bounds combined this way are conservative. Each end fails at most 2.5% of the time, so by Bonferroni the
+combined statement holds with at least about 95% confidence (the Wilson interval is itself approximate). This is what
+"conservative 95% bound" means on the page and in the README. A one-sided 95% Poisson bound would give a smaller
+number; we keep the larger one.
+
+The detection threshold in metres is the same everywhere, but its delta-v depends on altitude: about
+[`threshold.dv_cm_s_at_470km`] cm/s at 470 km and [`bound.threshold_dv_cm_s`] cm/s at the band's median altitude
+[`bound.median_alt_km`].
 
 Comparing with the filed rate assumes those satellites dodge about as often as the fleet did in the filing period. We
-compare with the lower filed rate (Gen 1). DODGE's own screen supports the assumption rather than weakening it: those
+compare with the lower filed rate (Gen 1): [`bound.rows[].max_share_of_gen1`] is the share shown on the page;
+[`bound.rows[].max_share_of_combined`] uses the combined rate instead. DODGE's own screen supports the assumption rather than weakening it: those
 satellites have more predicted passes under 1 km per satellite-year than the busiest shells [`bands`].
 
 ## 8. Outside judges
@@ -134,9 +145,9 @@ satellites have more predicted passes under 1 km per satellite-year than the bus
 | SupGP, an independent fit chain from SpaceX's own ephemerides | do both sources see the same step, beyond chance? Chance is measured by sliding SupGP 3 and 4 days either way | [`agreement`] |
 | DODGE's first stub (`engine/maneuvers.py`) | what a single threshold on consecutive sets counts | [`dodge_baseline`] |
 
-The pre-registered agreement line (70% beyond chance) was **not met**. Possible reasons, none verified: SupGP fits
-smooth planned thrust (section 3, finding 4); SupGP sets are noisier per set than GP; the two sources place the same
-step in different gaps. Agreement is higher for drag make-up than for avoidance-like steps [`agreement`].
+The pre-registered agreement line (70% beyond chance) was **not met**. Possible reasons, none verified: SupGP sets
+are noisier per set than GP; the two sources place the same step in different gaps; the two fit chains differ in ways
+we cannot see from public data (section 10, question 3). Agreement is higher for drag make-up than for avoidance-like steps [`agreement`].
 
 ## 9. Limits
 

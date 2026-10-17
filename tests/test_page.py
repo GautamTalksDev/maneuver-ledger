@@ -84,6 +84,17 @@ class Page(unittest.TestCase):
         b = self.summary["bound"]
         for row in b["rows"]:
             self.assertAlmostEqual(row["max_rate"], b["steps_upper95_per_year"] / row["recall_lo95"], places=9)
+            # gate 17 Oct round 1: the share field must be the one the page shows (Gen 1), named for what it divides by
+            self.assertAlmostEqual(row["max_share_of_gen1"], row["max_rate"] / f["gen1_rate_stated"], places=9)
+            self.assertAlmostEqual(row["max_share_of_combined"], row["max_rate"] / f["combined_rate"], places=9)
+            self.assertNotIn("max_share_of_fcc", row)
+        row16 = next(r for r in b["rows"] if r["dv_cm_s"] == 16)
+        self.assertIn(f"{row16['max_share_of_gen1'] * 100:.0f}%", self.doc)
+
+    def test_bound_is_described_as_conservative(self):
+        # gate 17 Oct round 1: the bound combines a two-sided Poisson end and a recall bound; say so
+        self.assertIn("conservative", visible_text(self.doc))
+        self.assertIn("two-sided", visible_text(self.doc))
 
     def test_says_it_was_not_reproduced(self):
         self.assertIn("did not reproduce", self.doc)

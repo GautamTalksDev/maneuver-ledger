@@ -26,6 +26,20 @@ class RepoText(unittest.TestCase):
                     bad.append(os.path.relpath(path, ROOT))
         self.assertEqual(bad, [])
 
+    def test_withdrawn_claims_stay_out(self):
+        # gate 17 Oct round 1: no claim that SpaceX ephemerides contain planned thrust (open question only),
+        # and Space-Track is described by what its agreement restricts (redistribution), not "forbids sharing analysis"
+        bad = []
+        for path in files():
+            if path.endswith(os.path.join("tests", "test_repo_text.py")):
+                continue
+            with open(path, encoding="utf-8", errors="replace") as f:
+                text = f.read().lower()
+            if "already contain planned thrust" in text or "fits smooth planned thrust" in text \
+                    or "forbids sharing analysis" in text:
+                bad.append(os.path.relpath(path, ROOT))
+        self.assertEqual(bad, [])
+
     def test_no_secrets(self):
         pattern = re.compile(r"(BEGIN [A-Z ]*PRIVATE KEY|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|xox[bp]-)")
         bad = []

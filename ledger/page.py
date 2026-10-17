@@ -230,7 +230,8 @@ def render(summary):
     j16 = _index(bound["injection"], "dv_cm_s", 16)
     j10 = _index(bound["injection"], "dv_cm_s", 10)
     k16 = _index(s["synthetic"]["by_dv"], "dv_cm_s", 16)
-    gen1_share = bound["rows"][i16]["max_rate"] / fcc["gen1_rate_stated"]
+    gen1_share = bound["rows"][i16]["max_share_of_gen1"]
+    share_path = f"bound.rows.{i16}.max_share_of_gen1"
     band = f'{p.num("constants.high_band_lo", ".0f")} to {p.num("constants.high_band_hi", ".0f")} km'
     conf = p.num("constants.confidence", "pct")
 
@@ -240,8 +241,8 @@ def render(summary):
     p.add(f'<p class="lede">SpaceX told the FCC its satellites made {p.num("fcc.total", "int")} collision-avoidance '
           f'manoeuvres from {p.date("fcc.period_start")} to {p.date("fcc.period_end")}: about '
           f'{p.num("fcc.combined_rate", ".0f")} per satellite per year. We looked for them in '
-          f'{p.num("coverage.span_days", ".0f")} days of public element sets. In the cleanest test, at most '
-          f'{p.derived(gen1_share, "pct", "bound.rows[16 cm/s].max_rate / fcc.gen1_rate_stated")} of them can be '
+          f'{p.num("coverage.span_days", ".1f")} days of public element sets. In the cleanest test, at most '
+          f'{p.num(share_path, "pct")} of them can be '
           f'{p.num(f"bound.rows.{i16}.dv_cm_s", ".0f")} cm/s or larger, the size public data reliably sees.</p>')
 
     # ---- the one-minute check
@@ -251,9 +252,9 @@ def render(summary):
           f'{p.num("fcc.satcat_mean_fleet", "int")} Starlink satellites in orbit)</span></div>')
     p.add(f'<div class="cell"><b>{p.num(f"bound.rows.{i16}.max_rate", ".1f")}</b><span>at most, per satellite per year: burns of '
           f'{p.num(f"bound.rows.{i16}.dv_cm_s", ".0f")} cm/s or more on satellites holding {band} '
-          f'({conf} bound from {p.num("bound.steps", "int")} steps of any kind in {p.num("bound.exposure_years", ".1f")} '
-          f'satellite-years)</span></div>')
-    p.add(f'<div class="cell"><b>{p.derived(gen1_share, "pct", "bound.rows[16 cm/s].max_rate / fcc.gen1_rate_stated")}</b>'
+          f'(conservative {conf} bound from {p.num("bound.steps", "int")} steps of any kind in '
+          f'{p.num("bound.exposure_years", ".1f")} satellite-years)</span></div>')
+    p.add(f'<div class="cell"><b>{p.num(share_path, "pct")}</b>'
           f'<span>of even the lower filed rate (Gen 1, about {p.num("fcc.gen1_rate_stated", ".0f")} per satellite per year) '
           f'could be burns that large</span></div>')
     p.add("</div>")
@@ -262,18 +263,26 @@ def render(summary):
           f'along track, or leave its size unchanged. Public element sets therefore cannot rebuild the '
           f'{p.num("fcc.total", "int")}. <strong>We did not reproduce it; this page shows why it cannot be reproduced this '
           f'way.</strong></p>')
-    p.add(f'<p>Detection limit in that band: a burn of {p.num(f"bound.injection.{j16}.dv_cm_s", ".0f")} cm/s added to a real '
+    p.add(f'<p>Detection limit in that band: the {p.num("threshold.m", ".0f")} m threshold is about '
+          f'{p.num("bound.threshold_dv_cm_s", ".1f")} cm/s at its median altitude of {p.num("bound.median_alt_km", ".0f")} km; '
+          f'a burn of {p.num(f"bound.injection.{j16}.dv_cm_s", ".0f")} cm/s added to a real '
           f'recorded history is found {p.num(f"bound.injection.{j16}.recall", "pct")} of the time; '
           f'{p.num(f"bound.injection.{j10}.dv_cm_s", ".0f")} cm/s, {p.num(f"bound.injection.{j10}.recall", "pct")}. '
           f'False alarms on passive debris: {p.num("threshold.far_per_year", ".1f")} per object per year '
-          f'({conf} upper {p.num("threshold.far_upper95", ".1f")}).</p></div>')
+          f'({conf} upper {p.num("threshold.far_upper95", ".1f")}).</p>')
+    p.add(f'<p class="cap">How the bound is built: the upper end of the two-sided {conf} Poisson interval for the step count '
+          f'(one-sided, that end has {p.num("constants.one_sided_level", "pct1")} coverage), divided by the lower end of the '
+          f'{conf} interval for recall (also one-sided {p.num("constants.one_sided_level", "pct1")}). Two bounds combined '
+          f'this way are conservative: by Bonferroni, joint coverage is at least about '
+          f'{p.num("constants.joint_coverage_min", "pct")}.</p></div>')
 
     # ---- what the steps are
     lo, hi = p.num("constants.control_alt_lo", ".0f"), p.num("constants.control_alt_hi", ".0f")
     p.add("<h2>What the steps in public data are</h2>")
     p.add(f'<p>Across {p.num("coverage.headline_satellites", "int")} satellites holding altitude between {lo} and {hi} km '
           f'({p.num("coverage.headline_exposure_years", ".0f")} satellite-years observed), steps above '
-          f'{p.num("threshold.m", ".0f")} m of semi-major axis (about {p.num("threshold.dv_cm_s_at_470km", ".1f")} cm/s) happen '
+          f'{p.num("threshold.m", ".0f")} m of semi-major axis (about {p.num("threshold.dv_cm_s_at_470km", ".1f")} cm/s at '
+          f'{p.num("constants.dv_reference_alt_km", ".0f")} km) happen '
           f'{p.num("rates.drag make-up.rate", ".1f")} times per satellite per year as drag make-up boosts (a decay, then a boost '
           f'back) and {p.num("rates.avoidance-like.rate", ".1f")} times as other small single changes ({conf} interval '
           f'{p.num("rates.avoidance-like.lo95", ".1f")} to {p.num("rates.avoidance-like.hi95", ".1f")}). Both are far rarer in '

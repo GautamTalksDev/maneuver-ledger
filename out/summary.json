@@ -32,6 +32,10 @@
   "lo95": 6.100525172049997,
   "rate": 8.158079264909539
  },
+ "avoidance_share_of_combined": {
+  "hi95": 0.221052767631307,
+  "rate": 0.19360980740206774
+ },
  "avoidance_sign": {
   "down": 759,
   "up": 226
@@ -144,50 +148,61 @@
     "trials": 600
    }
   ],
+  "interval": "upper end of the two-sided 95% Garwood interval (97.5% one-sided), divided by the lower end of the 95% Wilson recall interval (also 97.5% one-sided); conservative, joint coverage at least about 95% by Bonferroni",
+  "median_alt_km": 569.9990270488406,
   "rows": [
    {
     "dv_cm_s": 10,
     "max_rate": 4.4373908541142155,
-    "max_share_of_fcc": 0.10530939461793482,
+    "max_share_of_combined": 0.10530939461793482,
+    "max_share_of_gen1": 0.1232608570587282,
     "recall_lo95": 0.6109905535659118
    },
    {
     "dv_cm_s": 16,
     "max_rate": 2.8145376053496296,
-    "max_share_of_fcc": 0.0667953896993254,
+    "max_share_of_combined": 0.0667953896993254,
+    "max_share_of_gen1": 0.07818160014860082,
     "recall_lo95": 0.9632857238042716
    },
    {
     "dv_cm_s": 20,
     "max_rate": 2.7711820982802156,
-    "max_share_of_fcc": 0.06576646474028097,
+    "max_share_of_combined": 0.06576646474028097,
+    "max_share_of_gen1": 0.07697728050778377,
     "recall_lo95": 0.9783564551842772
    },
    {
     "dv_cm_s": 30,
     "max_rate": 2.728562191201269,
-    "max_share_of_fcc": 0.06475499724491822,
+    "max_share_of_combined": 0.06475499724491822,
+    "max_share_of_gen1": 0.07579339420003525,
     "recall_lo95": 0.9936382989862994
    },
    {
     "dv_cm_s": 40,
     "max_rate": 2.790049599581761,
-    "max_share_of_fcc": 0.06621423353174918,
+    "max_share_of_combined": 0.06621423353174918,
+    "max_share_of_gen1": 0.07750137776616002,
     "recall_lo95": 0.9717403929844038
    }
   ],
   "satellites": 298,
   "steps": 6,
-  "steps_upper95_per_year": 2.711203894343559
+  "steps_upper95_per_year": 2.711203894343559,
+  "threshold_dv_cm_s": 9.538385157720729
  },
  "conjunction_days": 12,
  "constants": {
   "confidence": 0.95,
   "control_alt_hi": 600.0,
   "control_alt_lo": 400.0,
+  "dv_reference_alt_km": 470.0,
   "far_share": 0.05,
   "high_band_hi": 600.0,
   "high_band_lo": 530.0,
+  "joint_coverage_min": 0.95,
+  "one_sided_level": 0.975,
   "pass_limit_km": 1.0,
   "recorder_every_hours": 4,
   "sizes_m": [
@@ -922,10 +937,6 @@
    "lo95": 0.0,
    "rate": 0.0
   }
- },
- "share_of_fcc": {
-  "hi95": 0.221052767631307,
-  "rate": 0.19360980740206774
  },
  "supgp_rates": {
   "avoidance-like": 6.607225651651256,

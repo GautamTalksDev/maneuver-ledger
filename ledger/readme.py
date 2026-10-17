@@ -19,7 +19,7 @@ def block(s):
     inj16 = next(x for x in b["injection"] if x["dv_cm_s"] == 16)
     inj10 = next(x for x in b["injection"] if x["dv_cm_s"] == 10)
     syn16 = next(x for x in s["synthetic"]["by_dv"] if x["dv_cm_s"] == 16)
-    gen1_share = row16["max_rate"] / f["gen1_rate_stated"]
+    gen1_share = row16["max_share_of_gen1"]
     win = next(x for x in s["held_out"]["by_launch_age"] if x["label"] == "launched in the window")
     old = next(x for x in s["held_out"]["by_launch_age"] if x["label"] == "over a year before")
     ag = s["agreement"]["all"]
@@ -34,12 +34,13 @@ def block(s):
         f"stated: about {f['gen1_rate_stated']} Gen 1, about {f['gen2_rate_stated']} Gen 2 |",
         f"| Public data used | {c['first_epoch'][:10]} to {c['last_epoch'][:10]}, {c['headline_satellites']:,} on-station "
         f"satellites, {c['headline_exposure_years']:.1f} satellite-years tested |",
-        f"| Detection threshold | {t['m']} m of semi-major axis, about {t['dv_cm_s_at_470km']:.1f} cm/s; false alarms on passive "
+        f"| Detection threshold | {t['m']} m of semi-major axis: about {t['dv_cm_s_at_470km']:.1f} cm/s at 470 km, "
+        f"{b['threshold_dv_cm_s']:.1f} cm/s in the low-drag band; false alarms on passive "
         f"debris {t['far_per_year']:.2f} per object-year (95% upper {t['far_upper95']:.2f}) |",
         f"| Steps above it, 400 to 600 km | drag make-up {r['drag make-up']['rate']:.1f} per sat-year; avoidance-like "
         f"{r['avoidance-like']['rate']:.1f} ({r['avoidance-like']['lo95']:.1f} to {r['avoidance-like']['hi95']:.1f}) |",
         f"| Low-drag band {b['band']} | {b['steps']} steps of any kind in {b['exposure_years']:.1f} satellite-years: at most "
-        f"{b['steps_upper95_per_year']:.2f} per sat-year (95%) |",
+        f"{b['steps_upper95_per_year']:.2f} per sat-year (conservative 95% bound, see docs/METHODS.md section 7) |",
         f"| Recall in that band | {inj16['recall'] * 100:.0f}% at 16 cm/s, {inj10['recall'] * 100:.0f}% at 10 cm/s "
         f"(burns injected into real histories) |",
         f"| Burns of 16 cm/s or more | at most {row16['max_rate']:.1f} per sat-year, {_pct(gen1_share)} of the lower filed "

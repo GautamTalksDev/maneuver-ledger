@@ -228,8 +228,11 @@ def run():
 
     # ---- the bound: how many avoidance burns of a given size public data could be hiding.
     #      Cleanest band = highest on-station satellites (weakest drag, so fewest drag make-up
-    #      boosts). Count EVERY on-station step there (any class), take the 95% Poisson upper
-    #      bound, divide by the lower 95% recall for burns of that size on real histories.
+    #      boosts). Count EVERY on-station step there (any class), take the upper end of the
+    #      two-sided 95% Poisson (Garwood) interval (97.5% one-sided), divide by the lower end of
+    #      the 95% recall interval for burns of that size on real histories. Two separate bounds
+    #      combined this way make the result conservative: each end fails at most 2.5% of the time
+    #      (one-sided), so by Bonferroni the joint coverage is at least about 95% (Wilson is approximate).
     hb_ids = [n for n in head if HIGH_BAND[0] <= alt_of[n] < HIGH_BAND[1]]
     hb_expo = sum(expo[n] for n in hb_ids)
     hb_k = sum(counts[c][n] for n in hb_ids for c in ("avoidance-like", "drag make-up", "large on-station"))
@@ -245,10 +248,17 @@ def run():
     for r in inj_hb:
         if r["dv_cm_s"] in BOUND_DV_CM_S and r["lo95"] > 0:
             mx = hb_up / r["lo95"]
-            bound_rows.append(dict(dv_cm_s=r["dv_cm_s"], recall_lo95=r["lo95"], max_rate=mx, max_share_of_fcc=mx / fcc_rate))
+            bound_rows.append(dict(dv_cm_s=r["dv_cm_s"], recall_lo95=r["lo95"], max_rate=mx,
+                                   max_share_of_combined=mx / fcc_rate,
+                                   max_share_of_gen1=mx / F.FCC["gen1_rate_stated"]))
+    hb_alt = float(np.median([alt_of[n] for n in hb_ids])) if hb_ids else float("nan")
     bound = dict(band=f"{HIGH_BAND[0]:.0f} to {HIGH_BAND[1]:.0f} km", satellites=len(hb_ids), exposure_days=hb_expo,
                  exposure_years=hb_expo / 365.25, steps=hb_k, steps_upper95_per_year=hb_up, rows=bound_rows,
-                 injection=inj_hb)
+                 injection=inj_hb, median_alt_km=hb_alt,
+                 threshold_dv_cm_s=E.dv_from_da(thr_km, E.RE_KM + hb_alt) * 100 if hb_ids else float("nan"),
+                 interval="upper end of the two-sided 95% Garwood interval (97.5% one-sided), divided by the "
+                          "lower end of the 95% Wilson recall interval (also 97.5% one-sided); conservative, joint "
+                          "coverage at least about 95% by Bonferroni")
 
     # ---- outside judge 3: GP against SupGP (independent processing of the same satellites)
     agree = agreement(events, head_set, sup_steps)
@@ -295,13 +305,14 @@ def run():
         rates=rates, avoidance_corrected=av_corr, avoidance_sign=dict(sign), supgp_rates=supgp_rates,
         conjunction_days=conj_days, bound=bound,
         expected_fcc_events_in_exposure=expected_fcc,
-        share_of_fcc=dict(rate=av_corr["rate"] / fcc_rate, hi95=av_corr["hi95"] / fcc_rate),
+        avoidance_share_of_combined=dict(rate=av_corr["rate"] / fcc_rate, hi95=av_corr["hi95"] / fcc_rate),
         curve=curve, bands=bands, far=far_rows, injection=inj, synthetic=syn, agreement=agree, noise=noise,
         held_out=held, dodge_baseline=baseline, examples=examples,
         constants=dict(control_alt_lo=CONTROL_ALT[0], control_alt_hi=CONTROL_ALT[1], far_share=FAR_SHARE,
                        high_band_lo=HIGH_BAND[0], high_band_hi=HIGH_BAND[1], confidence=0.95,
                        pass_limit_km=1.0, recorder_every_hours=4, window_days=D.WINDOW_DAYS,
-                       snr_min=D.SNR_MIN, sizes_m=[GRID_M[0], GRID_M[-1]]),
+                       snr_min=D.SNR_MIN, sizes_m=[GRID_M[0], GRID_M[-1]], dv_reference_alt_km=470.0,
+                       one_sided_level=0.975, joint_coverage_min=1.0 - 2 * (1.0 - 0.975)),
     )
     summary["fcc"].update(period_start=F.FCC["period_start"], period_end=F.FCC["period_end"],
                           letter_date="2026-07-01")
