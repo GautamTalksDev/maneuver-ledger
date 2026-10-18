@@ -68,6 +68,7 @@ The committed results were computed from these inputs (SHA-256 of each in
 first manoeuvre stub, `engine/maneuvers.py`, from the DODGE checkout named by `DODGE_DIR`. The committed numbers used
 the version with SHA-256 `1486023924e1179bbd9587eebaaaec705635c4d60afe3ef6aa70a59af812d141`, which counts only
 objects with at least one comparable pair of sets. DODGE's main branch on 17 October 2026 has an earlier version
-(`63dd25ddc814a3c0a6715d62c171507693d4ea43e1580e790e950e563f76162b`) that also counts objects with none, so with it
-the baseline's per-object rate differs. Nothing else depends on DODGE's code. Without DODGE, the block reads
+(`63dd25ddc814a3c0a6715d62c171507693d4ea43e1580e790e950e563f76162b`) that also counts objects with none. A fresh clone
+run with it on 17 October 2026 changed exactly two numbers, both in that block: `objects` (11,162 to 11,165) and
+`jumps_per_object_year` (50.397 to 50.383); the page, which rounds the rate to 50, did not change. Nothing else depends on DODGE's code. Without DODGE, the block reads
 `"available": false` and the row is left out.

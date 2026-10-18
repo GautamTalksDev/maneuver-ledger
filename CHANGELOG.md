@@ -46,3 +46,24 @@ Goal:         all of it on 17 October; prior example: DODGE's launch (6 Oct 2026
   rules (read-only, SHA-pinned, no secrets).
 - Wording: the README and METHODS no longer describe SpaceX's ephemerides as needing an internal approval; they say
   the files are not used in this version.
+
+### Launch log, 17 October 2026
+
+- Secret scan of the full history before the first push: gitleaks (3 commits, no leaks), trufflehog (0 verified,
+  0 unverified), and a pattern grep over all 57 blobs (0 hits). No secret-like file names tracked.
+- Repository created public at github.com/GautamTalksDev/maneuver-ledger; `main` pushed at `0a454f3`; first CI run
+  green.
+- Release `inputs-2026-10-17`: DODGE's 17 October files as downloaded before sealing, the CelesTrak SupGP download,
+  and the SHA-256 list.
+- Settings, read back from the GitHub API: secret scanning on, push protection on, Dependabot alerts on, Dependabot
+  security updates on, private vulnerability reporting on, CodeQL default setup configured, ruleset "protect main"
+  active (no deletion, no force push, required check `test`). Not available on this plan through the API:
+  non-provider secret patterns and validity checks (they stayed off). Topics, description and homepage set.
+- Reproduction check from a fresh GitHub clone with `tools/reproduce.sh`: all 48 inputs matched their SHA-256 and
+  `git status` showed no changed outputs (276 s). With DODGE main's `engine/maneuvers.py` instead, exactly two numbers
+  in `dodge_baseline` change; README and DATA.md now say so precisely.
+- Results page published under DODGE's site at dodge.gautamkhosla.com/ledger/ (DODGE commit `9a4e71b`, branch
+  `ledger-page`, deployed with `wrangler deploy`, version `db1c4078`). DODGE pull request #3 keeps DODGE's
+  repository in step with the live site. Headless Chrome: 0 console errors from the page under DODGE's CSP when
+  served locally; on the live site every DODGE page, old and new, logs one CSP error for an inline challenge script
+  that Cloudflare injects (a zone setting).
